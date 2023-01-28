@@ -6,11 +6,11 @@ from rest_framework import status
 from mini_wallet.api.response import SuccessResponse, ErrorResponse
 from mini_wallet.api.views import TokenAPIView
 
-from mini_wallet.api.serialize import serialize_wallet, serialize_virtual_money
+from mini_wallet.api.serialize import serialize_wallet, serialize_transaction
 
-from mini_wallet.apps.virtual_moneys.models import VirtualMoney
+from mini_wallet.apps.transactions.models import Transaction
 
-from .forms import InitForm, InitWalletForm, DepositForm, WithdrawalForm
+from .forms import InitForm, DepositForm, WithdrawalForm, EnableWalletForm, DisableWalletForm
 
 from typing import Any
 
@@ -36,7 +36,7 @@ class Wallet(TokenAPIView):
     def post(self, request: Request) -> Response:
         user = request.user
 
-        form = InitWalletForm(data=request.POST, wallet=user.wallet)
+        form = EnableWalletForm(data=request.POST, wallet=user.wallet)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
@@ -52,9 +52,6 @@ class Wallet(TokenAPIView):
         user = request.user
         wallet = user.wallet
 
-        if not wallet.is_active:
-            return ErrorResponse(error="Wallet disabled")
-
         response = {
             "wallet": serialize_wallet(wallet)
         }
@@ -64,7 +61,7 @@ class Wallet(TokenAPIView):
     def patch(self, request: Request) -> Response:
         user = request.user
 
-        form = InitWalletForm(data=request.POST, wallet=user.wallet)
+        form = DisableWalletForm(data=request.POST, wallet=user.wallet)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
@@ -72,9 +69,10 @@ class Wallet(TokenAPIView):
         wallet = form.save()
 
         response = {
-            "walet": serialize_wallet(wallet)
+            "wallet": serialize_wallet(wallet)
         }
         return SuccessResponse(response, status=status.HTTP_201_CREATED)
+
 
 class Deposit(TokenAPIView):
 
@@ -86,10 +84,10 @@ class Deposit(TokenAPIView):
         if not form.is_valid():
             return ErrorResponse(form=form)
 
-        virtual_money = form.save()
+        transaction = form.save()
 
         response = {
-            "deposit": serialize_virtual_money(virtual_money)
+            "deposit": serialize_transaction(transaction)
         }
         return SuccessResponse(response, status=status.HTTP_201_CREATED)
 
@@ -104,15 +102,15 @@ class Withdrawal(TokenAPIView):
         if not form.is_valid():
             return ErrorResponse(form=form)
 
-        virtual_money = form.save()
+        transaction = form.save()
 
         response = {
-            "withdrawal": serialize_virtual_money(virtual_money)
+            "withdrawal": serialize_transaction(transaction)
         }
         return SuccessResponse(response, status=status.HTTP_201_CREATED)
 
 
-class Transaction(TokenAPIView):
+class TransactionList(TokenAPIView):
 
     def get(self, request: Request) -> Response:
         user = request.user
@@ -121,12 +119,12 @@ class Transaction(TokenAPIView):
         if not wallet.is_active:
             return ErrorResponse(error="Wallet disabled")
 
-        virtual_moneys = user.virtual_moneys \
-            .filter(status=VirtualMoney.Status.SUCCESS.value) \
+        transactions = user.transactions \
+            .filter(status=Transaction.Status.SUCCESS.value) \
             .order_by('-created')
 
         response = {
-            "transactions": [serialize_virtual_money(virtual_money) for virtual_money in virtual_moneys]
+            "transactions": [serialize_transaction(transaction) for transaction in transactions]
         }
 
         return SuccessResponse(response, status=status.HTTP_200_OK)

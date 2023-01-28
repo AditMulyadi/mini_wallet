@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import Init, Wallet, Deposit, Withdrawal, Transaction
+from .views import Init, Wallet, Deposit, Withdrawal, TransactionList
 
 
 app_name = "v1"
@@ -10,5 +10,5 @@ urlpatterns = [
     path('wallet', Wallet.as_view(), name="wallet"),
     path('wallet/deposits', Deposit.as_view(), name="wallet"),
     path('wallet/withdrawals', Withdrawal.as_view(), name="withdrawals"),
-    path('wallet/transactions', Transaction.as_view(), name="transactions")
+    path('wallet/transactions', TransactionList.as_view(), name="transactions")
 ]

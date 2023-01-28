@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 
     # Apps
     'mini_wallet.apps.users',
-    'mini_wallet.apps.virtual_moneys',
+    'mini_wallet.apps.transactions',
     'mini_wallet.apps.wallets',
 
     # Third Party
