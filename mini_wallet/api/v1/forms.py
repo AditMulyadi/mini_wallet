@@ -12,14 +12,14 @@ from typing import Dict, Any, List
 
 
 class InitForm(forms.Form):
-    xid = forms.CharField()
+    customer_xid = forms.CharField()
 
     def save(self) -> User:
-        xid = self.cleaned_data['xid']
+        customer_xid = self.cleaned_data['customer_xid']
 
         user, created = User.objects.get_or_create(
-            xid=xid, defaults={
-                "username": xid
+            xid=customer_xid, defaults={
+                "username": customer_xid
             })
 
         if created:
