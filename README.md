@@ -1,4 +1,3 @@
-# mini_walllet
 Mini Wallet Application
 
 Requiremets:
