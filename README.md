@@ -37,4 +37,4 @@ Your mini_wallet project is now ready!
 
 ### Postman
 
-You can import this _postman-collection.json_ inside the project folder as a collection to help you access the API.
+You can import this [Postman Collection](https://github.com/AditMulyadi/mini_wallet/blob/master/postman-collection.json) inside the project folder as a collection to help you access the API. Making sure that you include the token inside the header after getting the token authentication from the _INIT_ API.
