@@ -82,6 +82,8 @@ class DisableWalletForm(forms.Form):
         self.wallet.save(update_fields=["is_active", 'disabled_at'])
         self.wallet.logs.create(action=WalletLog.Action.DISABLED.value, created_by=self.wallet.user)
 
+        return self.wallet
+
 
 class DepositForm(forms.Form):
     amount = forms.FloatField()
