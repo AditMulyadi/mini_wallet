@@ -18,7 +18,7 @@ from typing import Any
 class Init(APIView):
 
     def post(self, request: Request) -> Response:
-        form = InitForm(data=request.POST)
+        form = InitForm(data=request.data)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
@@ -36,7 +36,7 @@ class Wallet(TokenAPIView):
     def post(self, request: Request) -> Response:
         user = request.user
 
-        form = EnableWalletForm(data=request.POST, wallet=user.wallet)
+        form = EnableWalletForm(data=request.data, wallet=user.wallet)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
@@ -61,7 +61,7 @@ class Wallet(TokenAPIView):
     def patch(self, request: Request) -> Response:
         user = request.user
 
-        form = DisableWalletForm(data=request.POST, wallet=user.wallet)
+        form = DisableWalletForm(data=request.data, wallet=user.wallet)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
@@ -79,7 +79,7 @@ class Deposit(TokenAPIView):
     def post(self, request: Request) -> Response:
         user = request.user
 
-        form = DepositForm(data=request.POST, wallet=user.wallet)
+        form = DepositForm(data=request.data, wallet=user.wallet)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
@@ -97,7 +97,7 @@ class Withdrawal(TokenAPIView):
     def post(self, request: Request) -> Response:
         user = request.user
 
-        form = WithdrawalForm(data=request.POST, wallet=user.wallet)
+        form = WithdrawalForm(data=request.data, wallet=user.wallet)
 
         if not form.is_valid():
             return ErrorResponse(form=form)
