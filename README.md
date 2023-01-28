@@ -1,11 +1,11 @@
-Mini Wallet Application
+## Mini Wallet Application
 
-Requiremets:
+### Requiremets:
 - Python 3.9
 - Django 4.1
 - Database SQLite (default)
 
-Installation:
+### Installation:
 1. Clone this project to your local machine
 2. Create new python virtualenv by executing this command:
    ```
@@ -34,3 +34,7 @@ Installation:
    
 Your mini_wallet project is now ready!
 
+
+### Postman
+
+You can import this _postman-collection.json_ inside the project folder as a collection to help you access the API.
