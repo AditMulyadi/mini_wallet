@@ -17,7 +17,10 @@ class InitForm(forms.Form):
     def save(self) -> User:
         xid = self.cleaned_data['xid']
 
-        user, created = User.objects.get_or_create(xid=xid)
+        user, created = User.objects.get_or_create(
+            xid=xid, defaults={
+                "username": xid
+            })
 
         if created:
             wallet = Wallet.objects.create(user=user)
